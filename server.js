@@ -21,6 +21,27 @@ app.set("view engine", "ejs");
 
 const port = 3000;
 
+var mysql = require('mysql');
+
+
+var db = mysql.createConnection({
+   host: 'localhost', user: 'root', password: '', 
+   database: 'bookshop'
+}); 
+
+
+
+// module.exports = db; 
+
+db.connect((err) => {
+    if (err) {
+      console.error('Lỗi kết nối: ', err);
+      return;
+    }
+    console.log('Kết nối thành công!');
+  });
+
+  
 app.get("/", (req, res) => {
     res.render("dangky"); // Không cần thêm .ejs
 });
