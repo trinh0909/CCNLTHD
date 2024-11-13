@@ -22,7 +22,7 @@ app.set("view engine", "ejs");
 const port = 3000;
 
 app.get("/", (req, res) => {
-    res.render("login"); // Không cần thêm .ejs
+    res.render("dangky"); // Không cần thêm .ejs
 });
 
 app.listen(port, () => console.log("Ứng dụng đang chạy trên port 3000"));
