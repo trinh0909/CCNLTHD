@@ -16,6 +16,10 @@
 const express = require("express"); 
 const app = express();
 
+app.use(express.json()); // Để phân tích JSON (dành cho API JSON)
+app.use(express.urlencoded({ extended: true })); // Để phân tích dữ liệu từ form
+
+
 app.set("view engine", "ejs");
 // app.set("views", "./views"); // Đảm bảo có thư mục "views" trong thư mục dự án của bạn
 
@@ -41,9 +45,31 @@ db.connect((err) => {
     console.log('Kết nối thành công!');
   });
 
-  
+
 app.get("/", (req, res) => {
-    res.render("dangky"); // Không cần thêm .ejs
+    res.render("homepage"); // Không cần thêm .ejs
+});
+
+
+app.post("/homepage", (req, res) => {
+    console.log(req.body);  // In ra để kiểm tra dữ liệu gửi từ form
+    const { username, pass } = req.body;
+    if (!username || !pass) {
+        return res.status(400).send('Username or password missing');
+    }
+
+    var sql = `SELECT * FROM account WHERE username = '${username}' AND password = '${pass}'`;
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.render('login');
+        }
+
+        if (result.length > 0) {
+            res.render('homepage', { username: username });
+        } else {
+            res.render('login');
+        }
+    });
 });
 
 app.listen(port, () => console.log("Ứng dụng đang chạy trên port 3000"));
